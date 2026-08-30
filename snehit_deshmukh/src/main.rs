@@ -17,6 +17,17 @@ impl VCSEngine {
             logs: current_dir.join(".vcs/log.txt"),
         }
     }
+
+    fn init(&self) {
+        if self.dir.exists() {
+            println!("Repository already init-ed!");
+            return;
+        }
+        fs::create_dir(&self.dir).expect("Failed to create base directory!");
+        fs::create_dir(&self.snapshots).expect("Failed to create snapshots directory!");
+        println!("Initialized empty VCS repository in {:?}!", self.dir);
+        println!("This project is ready to begin tracking changes.");
+    }
 }
 
 fn main() {
