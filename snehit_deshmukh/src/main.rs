@@ -1,6 +1,7 @@
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::io::Write;
 
 struct VCSEngine {
     dir: PathBuf,
@@ -31,5 +32,25 @@ impl VCSEngine {
 }
 
 fn main() {
-    todo!();
+    let args: Vec<String> = env::args().collect();
+    if args.len() > 2 {
+        println!("Usage:");
+        println!("- vcs init");
+        println!("- vcs commit <msg>");
+    }
+
+    let engine = VCSEngine::new();
+    match args[1].as_str() {
+        "init" => engine.init(),
+        "commit" => {
+            if args.len() < 3 {
+                println!("Error: Commit command requires a commit message.");
+                println!("Usage: vsc commit <msg>");
+            } else {
+                // commit method
+                todo!();
+            }
+        }
+        _ => println!("Unrecognised command, use init or commit."),
+    }
 }
