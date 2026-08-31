@@ -27,4 +27,14 @@ Few files included: `pulsar.txt`, `glider.txt`, `gospel.txt` in `samples/`
 ### What was hard..
 Handling input was hard and is still incomplete or broken, works for general cases though.
 
+### Some Background on Conway's GOL
+Conway's Game of Life is a zero-player simulation created by British mathematician John Horton Conway in 1970.
 
+- Played on an infinite, two-dimensional grid of square cells. Here I use Toroidal wrapping.
+- Each cell has two possible states: alive or dead.
+
+#### Rules
+- Underpopulation: A live cell with fewer than two live neighbors dies.
+- Survival: A live cell with two or three live neighbors stays alive.
+- Overpopulation: A live cell with more than three live neighbors dies.
+- Reproduction: A dead cell with exactly three live neighbors becomes a live cell.
