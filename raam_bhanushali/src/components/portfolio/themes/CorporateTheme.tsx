@@ -1,0 +1,4 @@
+"use client";
+import type { ThemeProps } from "./theme-types";
+import CompleteThemeSections from "./CompleteThemeSections";
+export default function CorporateTheme({ data }: ThemeProps) { const personal = data.personalInfo ?? data.personal ?? {}; const name = personal.fullName || personal.name || "My Portfolio"; return <main className="min-h-screen bg-white text-slate-900"><header className="border-b border-slate-200"><div className="mx-auto max-w-6xl px-6 py-20"><p className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">Professional Portfolio</p><h1 className="mt-5 text-5xl font-bold md:text-6xl">{name}</h1><p className="mt-5 text-2xl text-slate-600">{data.professionalProfile?.title || "Professional"}</p></div></header><CompleteThemeSections data={data} variant="corporate" /><footer className="border-t border-slate-200 px-6 py-8 text-center text-sm text-slate-500">© {new Date().getFullYear()} {name}</footer></main>; }

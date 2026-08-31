@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         String      @id @default(cuid())
+  email      String      @unique
+  name       String?
+  createdAt  DateTime    @default(now())
+  password   String
+  accounts   Account[]
+  portfolios Portfolio[]
+  resumes    Resume[]
+  sessions   Session[]
+}
+
+model Portfolio {
+  id        String          @id @default(cuid())
+  title     String
+  slug      String          @unique
+  data      Json
+  published Boolean         @default(false)
+  userId    String
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  template  String          @default("developer")
+  user      User            @relation(fields: [userId], references: [id])
+  views     PortfolioView[]
+
+  @@index([userId])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model PortfolioView {
+  id          String   @id @default(cuid())
+  portfolioId String
+  visitorId   String
+  viewedAt    DateTime @default(now())
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  @@index([portfolioId])
+  @@index([visitorId])
+  @@index([portfolioId, visitorId])
+}
+
+model Resume {
+  id            String       @id @default(cuid())
+  filename      String
+  originalName  String
+  fileType      String
+  fileSize      Int
+  filePath      String
+  extractedText String?
+  parsedData    Json?
+  status        ResumeStatus @default(UPLOADED)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum ResumeStatus {
+  UPLOADED
+  PARSING
+  PARSED
+  AI_PARSING
+  AI_PARSED
+  FAILED
+}
