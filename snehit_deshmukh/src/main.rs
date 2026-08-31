@@ -72,10 +72,11 @@ impl VCSEngine {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    if args.len() > 2 {
+    if args.len() < 2 {
         println!("Usage:");
         println!("- vcs init");
         println!("- vcs commit <msg>");
+        return;
     }
 
     let engine = VCSEngine::new();
