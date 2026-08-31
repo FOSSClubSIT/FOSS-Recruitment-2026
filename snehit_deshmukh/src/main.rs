@@ -57,6 +57,16 @@ impl VCSEngine {
                 fs::copy(&file, &dest).expect("Failed to copyh file.");
             }
         }
+
+        let log_entry = format!("v{}: {}\n", version_id, message);
+        fs::OpenOptions::new()
+            .append(true)
+            .open(&self.logs)
+            .unwrap()
+            .write_all(log_entry.as_bytes())
+            .expect("Failed to update log file.");
+        
+        println!("Committed v{} - {}", version_id, message);
     }
 }
 
@@ -76,8 +86,7 @@ fn main() {
                 println!("Error: Commit command requires a commit message.");
                 println!("Usage: vsc commit <msg>");
             } else {
-                // commit method
-                todo!();
+                engine.commit(&args[2]);
             }
         }
         _ => println!("Unrecognised command, use init or commit."),
