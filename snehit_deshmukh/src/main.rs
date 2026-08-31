@@ -69,6 +69,33 @@ impl VCSEngine {
         
         println!("Committed v{} - {}", version_id, message);
     }
+
+    fn log(&self) {
+        if !self.dir.exists() {
+            println!("Error: VCS repository not found.");
+            return;
+        }
+
+        match fs::read_to_string(&self.logs) {
+            Ok(content) => {
+                println!("Snapshot history: ");
+
+                let lines: Vec<&str> = content.lines()
+                    .filter(|line| !line.is_empty())
+                    .collect();
+
+                if lines.is_empty() {
+                    println!("  -x No commits recorded.");
+                    return;
+                }
+
+                for line in lines.iter() {
+                    println!("  - {}", line);
+                }
+            },
+            Err(_) => println!("Error reading log file."),
+        };
+    }
 }
 
 fn main() {
@@ -76,6 +103,7 @@ fn main() {
     if args.len() < 2 {
         println!("Usage:");
         println!("- vcs init");
+        println!("- vcs log");
         println!("- vcs commit <msg>");
         return;
     }
@@ -83,6 +111,7 @@ fn main() {
     let engine = VCSEngine::new();
     match args[1].as_str() {
         "init" => engine.init(),
+        "log" => engine.log(),
         "commit" => {
             if args.len() < 3 {
                 println!("Error: Commit command requires a commit message.");
