@@ -29,6 +29,35 @@ impl VCSEngine {
         println!("Initialized empty VCS repository in {:?}!", self.dir);
         println!("This project is ready to begin tracking changes.");
     }
+
+    fn commit(&self, message: &str) {
+        if !self.dir.exists() {
+            println!("Error: Not a VCS repository, run the init command first.");
+            return;
+        }
+
+        let entries = fs::read_dir(&self.snapshots).expect("Failed to read snapshots.");
+        let version_id = entries.count() + 1;
+        let new_commit_dir = self.snapshots.join(format!("v{}", version_id));
+        fs::create_dir(&new_commit_dir).expect("Failed to create new commit dir.");
+
+        let current_dir = env::current_dir().expect("Failed to get working directory.");
+        let dir_items = fs::read_dir(&current_dir).expect("Failed to read dir files.");
+
+        for file in dir_items {
+            let file = file.expect("Failed to read file.").path();
+
+            if file.file_name().unwrap_or_default() == ".vcs" {
+                continue;
+            }
+
+            if file.is_file() {
+                let file_name = file.file_name().unwrap();
+                let dest = new_commit_dir.join(file_name);
+                fs::copy(&file, &dest).expect("Failed to copyh file.");
+            }
+        }
+    }
 }
 
 fn main() {
