@@ -81,6 +81,7 @@ impl VCSEngine {
                 println!("Snapshot history: ");
 
                 let lines: Vec<&str> = content.lines()
+                    .skip(1)
                     .filter(|line| !line.is_empty())
                     .collect();
 
