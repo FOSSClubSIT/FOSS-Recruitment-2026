@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-009",
+  "title": "Notification Service deployment failed canary metrics analysis during version v2.4.0 rollout",
+  "severity": "P2",
+  "affected_service": "notification-service",
+  "symptoms": [
+    "Canary pod error rate spiked to 14.5% compared to baseline 0.1%",
+    "Argo Rollouts automated analysis failed phase 2 validation",
+    "Push notifications for transactional SMS queued without dispatching"
+  ],
+  "root_cause": "Version v2.4.0 included an updated notification template engine that failed to parse legacy message JSON schemas missing the `locale` property.",
+  "resolution": "Argo Rollouts automatically initiated canary rollback to v2.3.9. Hotfix committed to provide default fallback locale for legacy payloads before re-deploying.",
+  "tags": [
+    "deployments",
+    "canary-rollout",
+    "argo-rollouts",
+    "helm",
+    "notification-service"
+  ],
+  "timestamp": "2026-08-03T10:50:00Z"
+}

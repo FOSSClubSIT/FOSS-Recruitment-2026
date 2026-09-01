@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-014",
+  "title": "Prometheus Monitoring instance failing to start due to TSDB WAL corruption after unclean shutdown",
+  "severity": "P2",
+  "affected_service": "monitoring-prometheus",
+  "symptoms": [
+    "Prometheus pod crashlooping with log: 'err=\"opening storage failed: corrupt WAL segment\"'",
+    "Grafana dashboards empty, all SRE alert notifications silent",
+    "Alertmanager DeadManSwitch failing to receive heartbeat"
+  ],
+  "root_cause": "Unexpected node hardware power interruption caused incomplete chunk writes to the Prometheus Time Series Database Write-Ahead Log (WAL).",
+  "resolution": "Removed corrupted WAL segment files in `/prometheus/data/wal/`, restarted Prometheus pod to rebuild WAL index, and restored backup metrics data.",
+  "tags": [
+    "monitoring",
+    "prometheus",
+    "tsdb",
+    "alertmanager",
+    "monitoring-prometheus"
+  ],
+  "timestamp": "2026-08-04T09:45:00Z"
+}

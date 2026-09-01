@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-008",
+  "title": "Payment Processor unable to connect to Banking Core due to VPC Peering route deletion",
+  "severity": "P1",
+  "affected_service": "payment-processor",
+  "symptoms": [
+    "Connection timeout exceptions (No route to host / EHOSTUNREACH) from payment-processor to 10.200.0.0/16 subnet",
+    "All credit card processing batch requests failing instantly",
+    "CloudWatch NetworkPacketsDrop metric elevated across VPC peering connection pcx-0a1b2c3d"
+  ],
+  "root_cause": "An automated Terraform apply script accidentally deleted the VPC Peering route entry in production subnet route table rt-prod-private-a during an infrastructure refactoring.",
+  "resolution": "Restored missing route rule in route table targeting `pcx-0a1b2c3d` and added a terraform lifecycle lock rule on VPC peering route attachments.",
+  "tags": [
+    "networking",
+    "vpc-peering",
+    "route-table",
+    "network-partition",
+    "payment-processor"
+  ],
+  "timestamp": "2026-08-03T04:15:00Z"
+}

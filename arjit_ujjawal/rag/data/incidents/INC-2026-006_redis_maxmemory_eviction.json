@@ -1,0 +1,22 @@
+{
+  "incident_id": "INC-2026-006",
+  "title": "Session store cache collapse caused by Redis maxmemory eviction misconfiguration",
+  "severity": "P1",
+  "affected_service": "session-store",
+  "symptoms": [
+    "Mass user logout events reported across web app and mobile clients",
+    "Redis memory usage reached 100% of allocated 16GB limit",
+    "Redis latency elevated to 800ms due to key eviction processing overhead",
+    "Cache hit ratio dropped from 98% to 12%"
+  ],
+  "root_cause": "Redis eviction policy was set to `noeviction` instead of `allkeys-lru`. When memory hit maxmemory, write commands to create new session keys threw `OOM command not allowed` errors.",
+  "resolution": "Updated Redis `maxmemory-policy` configuration live via `CONFIG SET maxmemory-policy allkeys-lru`, updated redis.conf, and scaled cluster instance memory to 32GB.",
+  "tags": [
+    "redis",
+    "cache",
+    "memory-exhaustion",
+    "eviction-policy",
+    "session-store"
+  ],
+  "timestamp": "2026-08-02T13:00:00Z"
+}

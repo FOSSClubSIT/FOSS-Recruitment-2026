@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-018",
+  "title": "Elasticsearch cluster node slow indexing due to AWS EBS gp2 burst balance exhaustion",
+  "severity": "P2",
+  "affected_service": "elastic-search-node",
+  "symptoms": [
+    "Disk I/O await latency jumped from 2ms to 450ms on node es-data-04",
+    "Elasticsearch cluster health status degraded from GREEN to YELLOW",
+    "AWS CloudWatch metric `BurstBalance` reached 0%"
+  ],
+  "root_cause": "Elasticsearch data node was provisioned on legacy gp2 EBS volume of 100GB, which ran out of IOPS credit balance under continuous high-volume indexing.",
+  "resolution": "Migrated AWS EBS volume type live from `gp2` to `gp3` with provisioned baseline 3000 IOPS and 125 MB/s throughput without unmounting.",
+  "tags": [
+    "storage",
+    "ebs",
+    "iops-throttling",
+    "volume-performance",
+    "elastic-search-node"
+  ],
+  "timestamp": "2026-08-04T22:50:00Z"
+}

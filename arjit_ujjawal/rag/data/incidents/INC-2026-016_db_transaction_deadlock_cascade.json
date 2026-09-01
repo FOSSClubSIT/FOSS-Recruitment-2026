@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-016",
+  "title": "Billing Service processing queue halted due to PostgreSQL transaction deadlock cascade",
+  "severity": "P1",
+  "affected_service": "billing-service",
+  "symptoms": [
+    "PostgreSQL logs flooded with `ERROR: deadlock detected`",
+    "Billing queue worker thread pool 100% blocked waiting for row locks",
+    "Payment invoice generation latency infinite / timed out"
+  ],
+  "root_cause": "Two concurrent background processes updated tables `invoices` and `account_balances` in reverse lock order within non-atomic explicit transactions.",
+  "resolution": "Killed deadlocked backends using `pg_cancel_backend()`, enforced deterministic lock ordering (sort by account ID first) in code codebase, and set `deadlock_timeout = 1s`.",
+  "tags": [
+    "postgresql",
+    "database",
+    "deadlock",
+    "transaction-lock",
+    "billing-service"
+  ],
+  "timestamp": "2026-08-04T17:10:00Z"
+}

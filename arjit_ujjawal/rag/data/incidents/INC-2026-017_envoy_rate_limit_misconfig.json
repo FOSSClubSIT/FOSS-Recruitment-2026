@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-017",
+  "title": "Public API Gateway rejecting legitimate traffic with HTTP 429 Too Many Requests",
+  "severity": "P2",
+  "affected_service": "public-api-gateway",
+  "symptoms": [
+    "Legitimate API clients receiving HTTP 429 Too Many Requests on valid API key queries",
+    "Envoy rate limit filter metric `ratelimit.over_limit` spiking",
+    "Customer support tickets reporting false rate limit blocks"
+  ],
+  "root_cause": "Envoy global rate limit service configuration applied client IP rate limits to X-Forwarded-For headers behind Cloudflare proxy without parsing trusted proxies, lumping all users under one single IP.",
+  "resolution": "Updated Envoy `use_remote_address` configuration to trust Cloudflare CIDR ranges and extract true client IP header for bucket partitioning.",
+  "tags": [
+    "api-gateway",
+    "rate-limit",
+    "envoy",
+    "cascading-failure",
+    "public-api-gateway"
+  ],
+  "timestamp": "2026-08-04T20:30:00Z"
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "runbook-db-pool",
+    "kind": "runbook",
+    "title": "Runbook: Database connection pool exhaustion",
+    "text": "Symptoms: p99 latency spike, connection timeouts, pool utilization at 100%. Common causes: slow query holding connections (check pg_stat_activity for long-running queries), connection leak after deploy, sudden traffic surge. First response: identify and kill long-running queries; if a recent deploy introduced the slow query, restart the service to clear the pool and consider rollback. Escalate to DBA if replication lag exceeds 30s."
+  },
+  {
+    "id": "runbook-service-restart",
+    "kind": "runbook",
+    "title": "Runbook: Safe service restart procedure",
+    "text": "Restarting payments-api is safe during business hours if done one instance at a time behind the load balancer. Drain connections first (30s grace). Restart clears connection pools, in-memory caches, and hung worker threads. Always open a tracking ticket before restart. Rollbacks require change-manager approval."
+  }
+]

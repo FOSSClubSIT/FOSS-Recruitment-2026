@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-020",
+  "title": "Customer Portal domain resolving to obsolete IP address due to ExternalDNS TTL caching drift",
+  "severity": "P3",
+  "affected_service": "customer-portal-dns",
+  "symptoms": [
+    "Subset of global users routed to decommissioned legacy load balancer IP",
+    "TLS handshake errors: SSL certificate mismatch for stale IP address",
+    "ExternalDNS controller failed sync cycle logs"
+  ],
+  "root_cause": "ExternalDNS record TTL was set to 86400 (24 hours) prior to ingress IP migration, causing upstream ISP recursive resolvers to cache old A record.",
+  "resolution": "Lowered Route53 record TTL to 60 seconds, flushed public DNS caches via Google/Cloudflare purge APIs, and decommissioned legacy IP after cache TTL expiry.",
+  "tags": [
+    "dns",
+    "external-dns",
+    "ttl-drift",
+    "name-resolution",
+    "customer-portal-dns"
+  ],
+  "timestamp": "2026-08-05T00:45:00Z"
+}

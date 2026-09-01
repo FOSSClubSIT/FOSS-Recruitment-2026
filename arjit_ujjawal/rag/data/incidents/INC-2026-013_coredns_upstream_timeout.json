@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-013",
+  "title": "Inventory API cross-service communication dropping due to CoreDNS upstream resolver failure",
+  "severity": "P1",
+  "affected_service": "inventory-api",
+  "symptoms": [
+    "DNS lookup timeout errors (`i/o timeout resolving inventory-db.internal`)",
+    "High latency spikes across all internal microservice gRPC calls",
+    "CoreDNS pod metrics reporting 50% dropped UDP queries"
+  ],
+  "root_cause": "CoreDNS pods were overloaded due to single-threaded IP lookup bottlenecks combined with an upstream cloud DNS resolver rate-limit throttling policy.",
+  "resolution": "Scaled CoreDNS deployment replicas from 2 to 10, enabled autopath plugin, and enabled local NodeLocal DNSCache daemonset across worker nodes.",
+  "tags": [
+    "dns",
+    "coredns",
+    "name-resolution",
+    "kube-dns",
+    "inventory-api"
+  ],
+  "timestamp": "2026-08-04T06:00:00Z"
+}

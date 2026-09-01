@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-015",
+  "title": "Telemetry Pipeline log buffer overflow under heavy log emission rate",
+  "severity": "P3",
+  "affected_service": "telemetry-pipeline",
+  "symptoms": [
+    "Vector agent memory usage exceeding 90% allocation limit",
+    "Log ingestion delay spiked to 25 minutes in Elasticsearch / Kibana",
+    "Fluentbit buffer files filling disk `/var/log/buffer/`"
+  ],
+  "root_cause": "Elasticsearch cluster indexing queue was throttled due to high bulk request payload sizes, propagating backpressure down to Vector collector instances.",
+  "resolution": "Increased Elasticsearch bulk queue capacity, added disk-backed buffer persistence in Vector config, and horizontally scaled Elasticsearch ingester nodes.",
+  "tags": [
+    "monitoring",
+    "logging",
+    "fluentbit",
+    "vector-backpressure",
+    "telemetry-pipeline"
+  ],
+  "timestamp": "2026-08-04T13:20:00Z"
+}
