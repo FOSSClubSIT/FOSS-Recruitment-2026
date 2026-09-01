@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhaav — Mandi Price Discovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="app" role="application" aria-label="Bhaav mandi price discovery">
+
+  <header class="hero">
+    <div class="hero-top">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="28" height="28">
+            <rect width="32" height="32" rx="8" fill="#fff"/>
+            <path d="M16 24v-8" stroke="#1F8A5B" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M16 16c-3.2-1.2-5.2-3.6-5.6-6.8 2.8.4 5.2 2.2 5.6 5.2 1-3.2 3.4-5.2 6.4-5.6-.2 3.4-2.2 5.8-6.4 7.2z" fill="#1F8A5B"/>
+          </svg>
+        </span>
+        <div>
+          <h1>Bhaav</h1>
+          <p class="tagline" data-i18n="tagline">mandi price discovery</p>
+        </div>
+      </div>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="is-active">EN</button>
+        <button type="button" data-lang="hi">हि</button>
+        <button type="button" data-lang="mr">मर</button>
+      </div>
+    </div>
+    <p class="updated">
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M7 2h2v2h6V2h2v2h3v18H4V4h3V2zm12 8H5v10h14V10zM8 13h3v3H8v-3z"/></svg>
+      <span data-i18n="updated">Updated</span> — <span id="todayDate"></span>
+    </p>
+  </header>
+
+  <main class="sheet">
+    <section class="view is-active" id="view-board" data-view="board">
+      <div class="card filters anim-card">
+        <div class="field">
+          <label for="cropSelect" data-i18n="crop">Crop</label>
+          <select id="cropSelect" aria-label="Select crop"></select>
+        </div>
+        <div class="field">
+          <label for="distSelect" data-i18n="district">District</label>
+          <select id="distSelect" aria-label="Select district"></select>
+        </div>
+      </div>
+
+      <div class="insight anim-card" id="nudgeBox">
+        <span class="insight-icon" id="nudgeArrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#fff" d="M12 4l7 8h-4v8H9v-8H5l7-8z"/></svg>
+        </span>
+        <p id="nudgeText"></p>
+      </div>
+
+      <div class="card board-card anim-card">
+        <div class="card-head">
+          <h2 data-i18n="todaysBoard">Today's board</h2>
+          <span class="unit">₹ / quintal</span>
+        </div>
+        <div id="boardList" class="board-list">Loading…</div>
+      </div>
+
+      <div class="card anim-card" id="trendCard">
+        <div class="card-head">
+          <h2 data-i18n="trendTitle">7-day trend — best market</h2>
+        </div>
+        <div class="chart-wrap">
+          <svg class="trend" viewBox="0 0 400 140" id="trendSvg" role="img" aria-label="7-day price trend"></svg>
+        </div>
+      </div>
+
+      <div class="card anim-card" id="forecastCard">
+        <div class="card-head">
+          <h2 data-i18n="forecastTitle">6-month price forecast</h2>
+        </div>
+        <div class="forecast-legend">
+          <span><i class="legend-dot actual"></i> <span data-i18n="actual">Actual</span></span>
+          <span><i class="legend-dot forecast"></i> <span data-i18n="forecast">Forecast</span></span>
+        </div>
+        <div class="chart-wrap">
+          <svg class="forecast" viewBox="0 0 400 160" id="forecastSvg" role="img" aria-label="Six month price forecast"></svg>
+        </div>
+        <p class="forecast-note" data-i18n="forecastNote">
+          This forecast uses historical trends and seasonal data from the past two years to predict future price movements. The shaded orange region indicates expected price ranges for the coming months.
+        </p>
+      </div>
+
+      <div class="card info-card anim-card">
+        <img class="thumb" src="https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?auto=format&fit=crop&w=120&h=120&q=80" alt="Onions">
+        <p data-i18n="footerNote">Prices are served from the Flask backend. Swap mock data for live Agmarknet prices in <code>data.py</code>.</p>
+      </div>
+    </section>
+
+    <section class="view" id="view-trends" data-view="trends" hidden>
+      <div class="card anim-card">
+        <div class="card-head">
+          <h2 data-i18n="trendTitle">7-day trend — best market</h2>
+        </div>
+        <div class="chart-wrap">
+          <svg class="trend" viewBox="0 0 400 140" id="trendSvgClone"></svg>
+        </div>
+      </div>
+      <div class="card anim-card">
+        <div class="card-head">
+          <h2 data-i18n="forecastTitle">6-month price forecast</h2>
+        </div>
+        <div class="forecast-legend">
+          <span><i class="legend-dot actual"></i> <span data-i18n="actual">Actual</span></span>
+          <span><i class="legend-dot forecast"></i> <span data-i18n="forecast">Forecast</span></span>
+        </div>
+        <div class="chart-wrap">
+          <svg class="forecast" viewBox="0 0 400 160" id="forecastSvgClone"></svg>
+        </div>
+        <p class="forecast-note" data-i18n="forecastNote">
+          This forecast uses historical trends and seasonal data from the past two years to predict future price movements. The shaded orange region indicates expected price ranges for the coming months.
+        </p>
+      </div>
+    </section>
+
+    <section class="view" id="view-alerts" data-view="alerts" hidden>
+      <div class="insight anim-card" id="alertsNudge">
+        <span class="insight-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#fff" d="M12 4l7 8h-4v8H9v-8H5l7-8z"/></svg>
+        </span>
+        <p id="alertsNudgeText"></p>
+      </div>
+      <div class="card anim-card">
+        <div class="card-head">
+          <h2 data-i18n="priceAlerts">Price alerts</h2>
+        </div>
+        <label class="toggle-row">
+          <span data-i18n="alertHigh">Notify when best mandi rises 5% in a week</span>
+          <input type="checkbox" id="alertHigh" checked>
+        </label>
+        <label class="toggle-row">
+          <span data-i18n="alertDrop">Notify when prices drop 5%</span>
+          <input type="checkbox" id="alertDrop">
+        </label>
+      </div>
+    </section>
+
+    <section class="view" id="view-profile" data-view="profile" hidden>
+      <div class="card profile-card anim-card">
+        <div class="avatar" aria-hidden="true">🌾</div>
+        <h2 data-i18n="farmerName">Farmer profile</h2>
+        <p class="muted" data-i18n="farmerPlace">Maharashtra · Mandi board</p>
+        <dl class="meta-list">
+          <div><dt data-i18n="crop">Crop</dt><dd id="profileCrop">Onion</dd></div>
+          <div><dt data-i18n="district">District</dt><dd id="profileDist">All districts</dd></div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar" aria-label="Primary">
+    <button type="button" class="is-active" data-tab="board">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/></svg>
+      <span data-i18n="navBoard">Board</span>
+    </button>
+    <button type="button" data-tab="trends">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M3 17.25L9.5 10l4 4L21 6.5V4l-8.5 9.5-4-4L3 14.75V17.25zM3 19h18v2H3v-2z"/></svg>
+      <span data-i18n="navTrends">Trends</span>
+    </button>
+    <button type="button" data-tab="alerts">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22zm8-6V11a8 8 0 1 0-16 0v5L2 18v1h20v-1l-2-2z"/></svg>
+      <span data-i18n="navAlerts">Alerts</span>
+    </button>
+    <button type="button" data-tab="profile">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 12a4.5 4.5 0 1 0-4.5-4.5A4.5 4.5 0 0 0 12 12zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5z"/></svg>
+      <span data-i18n="navProfile">Profile</span>
+    </button>
+  </nav>
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
