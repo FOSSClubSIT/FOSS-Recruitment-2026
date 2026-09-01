@@ -1,0 +1,7 @@
+# Cloudflare Worker Environment Variables Template
+# Set these secrets in the Cloudflare Dashboard:
+# Workers & Pages -> your-worker -> Settings -> Variables and Secrets
+ALLOWED_CHAT_ID=your_telegram_chat_id
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+GITHUB_REPO=username/AcademicAssistant
+GITHUB_PAT=ghp_your_github_personal_access_token
