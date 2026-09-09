@@ -1,0 +1,6 @@
+[[palette]]
+name    = "pywal"
+display = "pywal"
+from    = "{color1}"
+to      = "{color6}"
+
