@@ -1,0 +1,4 @@
+"use client";
+import type { ThemeProps } from "./theme-types";
+import CompleteThemeSections from "./CompleteThemeSections";
+export default function ModernTheme({ data }: ThemeProps) { const personal = data.personalInfo ?? data.personal ?? {}; const name = personal.fullName || personal.name || "My Portfolio"; return <main className="min-h-screen bg-zinc-50 text-zinc-900"><header className="border-b border-zinc-200 bg-white"><div className="mx-auto max-w-6xl px-6 py-24"><p className="text-sm font-semibold uppercase tracking-[0.25em] text-indigo-600">Portfolio</p><h1 className="mt-4 text-5xl font-bold md:text-7xl">{name}</h1><p className="mt-6 text-2xl text-zinc-600">{data.professionalProfile?.title || "Professional"}</p></div></header><CompleteThemeSections data={data} variant="modern" /><footer className="border-t border-zinc-200 bg-white px-6 py-8 text-center text-sm text-zinc-500">© {new Date().getFullYear()} {name}</footer></main>; }

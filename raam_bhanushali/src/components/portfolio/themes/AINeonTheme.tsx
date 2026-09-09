@@ -1,0 +1,4 @@
+"use client";
+import type { ThemeProps } from "./theme-types";
+import CompleteThemeSections from "./CompleteThemeSections";
+export default function AINeonTheme({ data }: ThemeProps) { const personal = data.personalInfo ?? data.personal ?? {}; const name = personal.fullName || personal.name || "My Portfolio"; return <main className="min-h-screen bg-black text-white"><header className="border-b border-cyan-500/20"><div className="mx-auto max-w-6xl px-6 py-28"><p className="font-mono text-sm uppercase tracking-[0.4em]">SYSTEM {"//"} PROFILE</p><h1 className="mt-6 text-5xl font-black md:text-8xl">{name}</h1><p className="mt-8 font-mono text-xl text-cyan-300">&gt; {data.professionalProfile?.title || "Professional"}</p></div></header><CompleteThemeSections data={data} variant="ai" /><footer className="border-t border-cyan-500/10 px-6 py-8 text-center font-mono text-xs text-zinc-600"><span className="text-cyan-500">ResumeForge</span> {"//"} AI PORTFOLIO</footer></main>; }
