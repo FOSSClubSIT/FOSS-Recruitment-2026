@@ -1,0 +1,33 @@
+# Yash Chandnani
+
+> Yash Chandnani is a Software Developer based in Pune, India, specializing in AI integration, full-stack development, agentic AI pipelines, and LLM-powered systems. He currently works at Linkcode Technologies.
+
+## Identity
+
+- Full name: Yash Chandnani
+- Role: Software Developer
+- Location: Pune, Maharashtra, India
+- Employer: Linkcode Technologies
+- Email: yash.chandnani07@gmail.com
+- GitHub: https://github.com/yashchandnani07
+- LinkedIn: https://www.linkedin.com/in/yash-chandnani07/
+
+## Key pages
+
+- [Portfolio](https://yashchandnani07.github.io/): Main site — about, work experience, projects, skills, and contact.
+- [Terminal Resume](https://yashchandnani07.github.io/terminal.html): Interactive command-line resume built with vanilla HTML/CSS/JS.
+
+## Skills
+
+Node.js, React, Python, TypeScript, MongoDB, OpenAI API, LLM integration, Agentic AI, DevSecOps, real-time web applications.
+
+## Notable projects
+
+- AI Scheduler — AI calendar automation assistant that converts unstructured chat into Google Calendar events. Node.js, MongoDB, OpenAI API, Google Calendar API. https://github.com/yashchandnani07/Chat-based-scheduler
+- ARCE — Autonomous Remediation & Compliance Engine, an agentic DevSecOps bot that patches vulnerabilities in under 4 minutes. Agentic AI, AST Analysis, Node.js. https://github.com/yashchandnani07/ARCE
+- Code Ignite — AI-powered vibe coding platform, from prompt to live Netlify deployment in under 60 seconds. React, TypeScript, OpenAI API.
+
+## Education
+
+- B.Tech in Artificial Intelligence & Machine Learning, Symbiosis Institute of Technology (expected May 2029)
+- Diploma in Computer Engineering, Cusrow Wadia Institute of Technology (completed May 2026)
