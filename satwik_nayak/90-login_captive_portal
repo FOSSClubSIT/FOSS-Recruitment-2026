@@ -1,0 +1,73 @@
+#!/bin/sh -e
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+send_notification() {
+  TARGET_USER=$(who | awk '$1 != "root" {print $1; exit}')
+
+  if [ -n "$TARGET_USER" ]; then
+    TARGET_UID=$(id -u "$TARGET_USER")
+    sudo -u "$TARGET_USER" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${TARGET_UID}/bus" \
+      notify-send "Wi-Fi Authenticated" "Successfully logged into $CURRENT_SSID" \
+      -i network-wireless -t 5000
+  fi
+}
+
+log_message() {
+  if [ -x "/usr/bin/systemd-cat" ]; then
+    echo "$1" | /usr/bin/systemd-cat -t captive-portal
+  else
+    echo "Captive-Portal-Log: $1"
+  fi
+}
+
+if [ -f /etc/NetworkManager/portal-credentials.conf ]; then
+  . /etc/NetworkManager/portal-credentials.conf
+else
+  log_message "Could not find /etc/NetworkManager/portal-credentials.conf"
+  exit 1
+fi
+
+
+case "$2" in
+connectivity-change)
+  if [ "$CONNECTIVITY_STATE" = "PORTAL" ]; then
+
+    CURRENT_SSID=$(nmcli -t -f NAME,TYPE connection show --active | grep '802-11-wireless$' | cut -d: -f1 || true)
+
+    if [ -z "$CURRENT_SSID" ]; then
+      log_message "Error: Could not retrive SSID"
+      exit 1
+    fi
+
+    log_message "Dispatcher Triggered - Portal Detected - Retrieved SSID: '$CURRENT_SSID'"
+
+    if [ "$CURRENT_SSID" != "$TARGET_SSID" ]; then
+      log_message "Ignoring portal on $CURRENT_SSID"
+      exit 0
+    fi
+
+    AUTH_URL=$(curl --max-time 5 -s -o /dev/null -w "%{redirect_url}" http://nmcheck.gnome.org/check_network_status.txt)
+
+    if [ -z "$AUTH_URL" ]; then
+      log_message "Error: Could not determine captive portal redirect URL"
+      exit 1
+    fi
+
+    log_message "Discovered portal URL: $AUTH_URL"
+
+    sessid=$(curl -I -s "$AUTH_URL" --insecure | grep -i "SESSID=" | awk '{print $2}' | tr -d '\r')
+
+    curl -s -o /dev/null "$AUTH_URL" \
+      -b "${sessid%;}" \
+      --data-raw "inputStr=&escapeUser=${USERNAME}&preauthid=&user=${USERNAME}&passwd=${PASSWORD}&ok=Login" \
+      --insecure
+
+    log_message "Login request finished"
+    send_notification
+  fi
+  ;;
+*)
+  exit 0
+  ;;
+esac
