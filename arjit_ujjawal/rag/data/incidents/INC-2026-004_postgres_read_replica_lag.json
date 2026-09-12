@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-004",
+  "title": "Analytics Dashboard serving stale data due to PostgreSQL read replica replication lag",
+  "severity": "P3",
+  "affected_service": "analytics-worker",
+  "symptoms": [
+    "Dashboard reports lagging behind live transactional data by up to 45 minutes",
+    "Prometheus metric pg_replication_lag_bytes exceeded 12GB",
+    "Read replica CPU utilization pinned at 100% on node db-replica-02"
+  ],
+  "root_cause": "A heavy analytical vacuum/reindex query was executed directly on the primary DB, producing massive write-ahead log (WAL) streams that choked replica network bandwidth.",
+  "resolution": "Canceled long-running maintenance queries on primary, tuned max_standby_streaming_delay on replica, and allocated dedicated WAL network bandwidth.",
+  "tags": [
+    "postgresql",
+    "database",
+    "read-replica",
+    "replication-lag",
+    "analytics-worker"
+  ],
+  "timestamp": "2026-08-02T02:10:00Z"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "SRE Console",
+  "description": "OpsCenter AI - Tactical Command Center for Site Reliability Engineering with Incident Simulation, Telemetry Monitoring, Knowledge Base, and Patch Deployment",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

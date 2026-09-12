@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-012",
+  "title": "Log Aggregator node filesystem 100% full due to unrotated container debug stdout logs",
+  "severity": "P2",
+  "affected_service": "log-aggregator",
+  "symptoms": [
+    "Kubelet reporting NodeDiskPressure on node k8s-worker-08",
+    "Containers evicted rapidly across namespace logging",
+    "Syslog error: 'No space left on device' writing to /var/log/pods"
+  ],
+  "root_cause": "A debug log verbosity level enabled on the ingester service generated 120GB of uncompressed JSON logs in 4 hours, bypassing Docker/CRI-O container log rotation limits.",
+  "resolution": "Truncated oversized log files in `/var/log/pods`, adjusted logrotate container configuration max size to 50MB, and reset ingester verbosity level to INFO.",
+  "tags": [
+    "storage",
+    "pvc",
+    "disk-full",
+    "filesystem",
+    "log-aggregator"
+  ],
+  "timestamp": "2026-08-04T01:15:00Z"
+}

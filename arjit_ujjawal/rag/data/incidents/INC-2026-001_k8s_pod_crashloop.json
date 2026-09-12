@@ -1,0 +1,22 @@
+{
+  "incident_id": "INC-2026-001",
+  "title": "Auth Service pod stuck in CrashLoopBackOff due to missing environment variable secret",
+  "severity": "P1",
+  "affected_service": "auth-service",
+  "symptoms": [
+    "HTTP 500 internal server errors on /v1/auth/login and /v1/auth/verify endpoints",
+    "Kubernetes deployment auth-service shows 0/5 ready replicas",
+    "Pod status reported as CrashLoopBackOff in namespace production",
+    "Alertmanager notification: AuthServiceDegraded"
+  ],
+  "root_cause": "The auth-service pod failed initialization because JWT_SECRET_KEY environment variable failed to mount from Secret 'auth-jwt-secrets', which was rotated with a mismatched key name.",
+  "resolution": "Updated the Secret key mapping in Deployment manifest to match 'jwt-signing-key' and triggered a rolling update via kubectl rollout restart deployment/auth-service.",
+  "tags": [
+    "kubernetes",
+    "crashloopbackoff",
+    "pod-failure",
+    "deployment",
+    "auth-service"
+  ],
+  "timestamp": "2026-08-01T08:15:00Z"
+}

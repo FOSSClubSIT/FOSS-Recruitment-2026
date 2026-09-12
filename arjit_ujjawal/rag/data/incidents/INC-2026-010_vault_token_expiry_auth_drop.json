@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-010",
+  "title": "Identity Provider authentication tokens rejecting requests following HashiCorp Vault token expiration",
+  "severity": "P1",
+  "affected_service": "identity-provider",
+  "symptoms": [
+    "Identity provider logs flooded with 'Permission Denied: Vault token expired'",
+    "OAuth2 authorization code flow failing for all external API consumers",
+    "Prometheus alert: VaultAuthTokenExpirationTriggered active"
+  ],
+  "root_cause": "The HashiCorp Vault authentication sidecar daemon failed to renew its periodic client token due to a background renewal lease renewal retry bug in vault-agent v1.12.",
+  "resolution": "Manually re-authenticated vault-agent using Kubernetes auth method, restarted identity-provider pods, and upgraded vault-agent sidecar to v1.14.",
+  "tags": [
+    "authentication",
+    "jwt",
+    "hashicorp-vault",
+    "token-expired",
+    "identity-provider"
+  ],
+  "timestamp": "2026-08-03T16:05:00Z"
+}

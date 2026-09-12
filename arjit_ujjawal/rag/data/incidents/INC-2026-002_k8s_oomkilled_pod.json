@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-002",
+  "title": "Search Indexer pod OOMKilled under high batch indexing payload load",
+  "severity": "P2",
+  "affected_service": "search-indexer",
+  "symptoms": [
+    "Pod terminated with Exit Code 137 (OOMKilled)",
+    "Search indexing job queue backlog spiked to 45,000 pending items",
+    "Prometheus alert: ContainerMemoryUsageNearLimit triggered for search-indexer namespace production"
+  ],
+  "root_cause": "Search indexer worker attempted to buffer 2GB bulk product catalogue update entirely in memory without pagination, exceeding the container memory limit of 1.5Gi.",
+  "resolution": "Increased container memory limit to 4Gi in pod resource requests/limits and refactored batch stream chunking size from 10,000 to 500 items.",
+  "tags": [
+    "kubernetes",
+    "crashloopbackoff",
+    "pod-failure",
+    "oomkilled",
+    "search-indexer"
+  ],
+  "timestamp": "2026-08-01T11:30:00Z"
+}

@@ -1,0 +1,22 @@
+{
+  "incident_id": "INC-2026-003",
+  "title": "User Profile API failing with PostgreSQL connection pool exhaustion",
+  "severity": "P1",
+  "affected_service": "user-profile-api",
+  "symptoms": [
+    "HTTP 503 Service Unavailable across all profile endpoints",
+    "Application log error: 'FATAL: sorry, too many clients already' from PostgreSQL",
+    "PgBouncer client waiting queue reached max limit of 1000 active clients",
+    "Grafana metric pg_stat_activity active connections saturated at 200/200 max pool size"
+  ],
+  "root_cause": "A rogue async background worker leak held DB connections open indefinitely without releasing them back to PgBouncer due to an unhandled exception block in user audit log writer.",
+  "resolution": "Terminated idle orphan connections in PostgreSQL via pg_terminate_backend(), deployed hotfix patching try-finally connection cleanup in audit worker, and increased PgBouncer default pool size.",
+  "tags": [
+    "postgresql",
+    "database",
+    "connection-pool",
+    "pgbouncer",
+    "user-profile-api"
+  ],
+  "timestamp": "2026-08-01T14:45:00Z"
+}

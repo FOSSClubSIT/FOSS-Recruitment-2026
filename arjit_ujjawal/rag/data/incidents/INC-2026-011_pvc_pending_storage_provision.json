@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-011",
+  "title": "Order Fulfillment DB replica pod stuck in Pending state due to PVC volume allocation failure",
+  "severity": "P2",
+  "affected_service": "order-fulfillment-db",
+  "symptoms": [
+    "Pod order-fulfillment-db-replica-2 stuck in `Pending` phase for > 30 minutes",
+    "kubectl describe pod event: '0/12 nodes available: 12 VolumeBindingWaiting'",
+    "EBS CSI driver logs: 'Failed to provision volume: VolumeLimitExceeded on AWS zone us-east-1a'"
+  ],
+  "root_cause": "AWS EC2 instance volume attachment limit (28 EBS volumes per node) reached on target Kubernetes worker node, preventing EBS CSI provisioner from mounting new PVC.",
+  "resolution": "Cordoned and drained affected node to re-balance pod distribution across worker pool, and updated storage provisioner settings to use Nitro instance types with higher EBS attachment limits.",
+  "tags": [
+    "storage",
+    "pvc",
+    "ebs",
+    "disk-full",
+    "order-fulfillment-db"
+  ],
+  "timestamp": "2026-08-03T21:30:00Z"
+}

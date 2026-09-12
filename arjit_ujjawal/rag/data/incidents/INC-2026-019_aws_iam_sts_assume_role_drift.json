@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-019",
+  "title": "S3 Exporter Service failing with AccessDenied calling AWS STS AssumeRoleWithWebIdentity",
+  "severity": "P2",
+  "affected_service": "s3-exporter-service",
+  "symptoms": [
+    "Application log error: 'AccessDenied: Not authorized to perform sts:AssumeRoleWithWebIdentity'",
+    "S3 backup exports failed to upload for 6 consecutive scheduled runs",
+    "Kubelet service account token projected volume updated"
+  ],
+  "root_cause": "The IAM OIDC provider trust policy for the service account lacked updated audience string when cluster OIDC endpoint was recreated.",
+  "resolution": "Updated AWS IAM Role trust relationship JSON policy to include correct `sts.amazonaws.com` audience and service account namespace binding.",
+  "tags": [
+    "authentication",
+    "iam",
+    "aws-sts",
+    "permission-denied",
+    "s3-exporter-service"
+  ],
+  "timestamp": "2026-08-05T00:10:00Z"
+}

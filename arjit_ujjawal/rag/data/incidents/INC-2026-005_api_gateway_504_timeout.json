@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-005",
+  "title": "Checkout Gateway API returning 504 Gateway Timeout during peak traffic surge",
+  "severity": "P1",
+  "affected_service": "checkout-gateway",
+  "symptoms": [
+    "HTTP 504 Gateway Timeout response rate reached 34% on /v2/checkout/process",
+    "Upstream Envoy proxy logs: 'upstream request timeout after 15000ms'",
+    "Customer cart checkout conversions dropped by 60%"
+  ],
+  "root_cause": "The backend payment fraud evaluation microservice was synchronously calling a degraded 3rd-party anti-fraud vendor without an explicit circuit breaker timeout, blocking gateway worker threads.",
+  "resolution": "Enabled resilience4j circuit breaker on external vendor call with 1.5s fallback, allowing checkout orders to process under soft risk scoring.",
+  "tags": [
+    "api-gateway",
+    "http-504",
+    "timeout",
+    "ingress",
+    "checkout-gateway"
+  ],
+  "timestamp": "2026-08-02T09:20:00Z"
+}

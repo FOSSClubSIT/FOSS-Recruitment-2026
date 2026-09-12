@@ -1,0 +1,21 @@
+{
+  "incident_id": "INC-2026-007",
+  "title": "Recommendation cache response latency spike caused by unindexed KEYS pattern scan",
+  "severity": "P2",
+  "affected_service": "recommendation-cache",
+  "symptoms": [
+    "Recommendation service p99 latency spiked to 3200ms",
+    "Redis slowlog recorded single command execution duration of 2.8 seconds",
+    "High CPU usage on single core of Redis master node"
+  ],
+  "root_cause": "A newly deployed cron job executed `KEYS user:rec:*` against a production Redis cluster with 15 million keys, blocking single-threaded event loop execution.",
+  "resolution": "Killed the rogue SCAN script process, patched the cron job to use non-blocking cursor-based `SCAN` with batching, and added command rename rule in redis.conf for `KEYS`.",
+  "tags": [
+    "redis",
+    "cache",
+    "latency-spike",
+    "single-thread-blocking",
+    "recommendation-cache"
+  ],
+  "timestamp": "2026-08-02T18:40:00Z"
+}

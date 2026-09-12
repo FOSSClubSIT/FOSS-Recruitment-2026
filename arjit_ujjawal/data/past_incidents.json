@@ -1,0 +1,14 @@
+[
+  {
+    "id": "incident-2025-11-03",
+    "kind": "incident",
+    "title": "Past incident: payments-api latency after ORM upgrade",
+    "text": "2025-11-03: p99 latency rose to 3.8s after ORM library upgrade. Root cause: N+1 query pattern introduced by lazy-loading change, saturating the connection pool. Resolution: service restart mitigated for 40 minutes, permanent fix was reverting the ORM config. Time to resolve: 2h10m."
+  },
+  {
+    "id": "incident-2025-12-19",
+    "kind": "incident",
+    "title": "Past incident: checkout errors from network partition",
+    "text": "2025-12-19: checkout 5xx rate 9%. Initially suspected DB pool exhaustion, but pool utilization was normal; root cause was a network partition between app subnet and DB subnet after a firewall rule push. Lesson: always check network path before restarting services."
+  }
+]
