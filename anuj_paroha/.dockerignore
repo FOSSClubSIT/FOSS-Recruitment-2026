@@ -1,0 +1,8 @@
+.venv-1
+__pycache__
+*.pyc
+.DS_Store
+.git
+.gitignore
+notebooks
+objects
