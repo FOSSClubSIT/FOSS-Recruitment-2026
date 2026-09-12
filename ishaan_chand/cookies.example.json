@@ -1,0 +1,22 @@
+[
+  {
+    "name": "__Secure-next-auth.session-token",
+    "value": "EXAMPLE_SESSION_TOKEN_REPLACE_WITH_YOURS",
+    "domain": "chatgpt.com",
+    "path": "/",
+    "expires": 1800000000,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "_cfuvid",
+    "value": "EXAMPLE_CLOUDFLARE_ID_REPLACE_WITH_YOURS",
+    "domain": ".chatgpt.com",
+    "path": "/",
+    "expires": 1800000000,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "None"
+  }
+]

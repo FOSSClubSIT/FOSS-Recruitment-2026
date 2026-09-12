@@ -1,0 +1,37 @@
+# ==========================================
+# BrowserAPIFree Security & Environment Ignore
+# ==========================================
+
+# NEVER COMMIT AUTHENTICATION COOKIES OR TOKENS
+cookies.json
+*.cookie
+*.cookies
+*.session
+*.token
+.env
+.env.*
+
+# Browser profiles, cache, and session state
+.browser_profiles/
+playwright_profile/
+playwright-report/
+test-results/
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+dist/
+build/
+*.egg-info/
+
+# Local diagnostic logs & screenshots
+*.log
+*.png
+*.jpg
+*.jpeg
+*.xlsx
+*.zip
